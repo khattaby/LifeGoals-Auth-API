@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeGoals - Personal Goal Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-bullseye"></i>
+                <h1>LifeGoals</h1>
+            </div>
+            <nav class="nav" id="nav">
+                <button id="profileBtn" class="btn btn-outline" style="display: none;">
+                    <i class="fas fa-user"></i> Profile
+                </button>
+                <button id="dashboardBtn" class="btn btn-outline" style="display: none;">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </button>
+                <button id="logoutBtn" class="btn btn-outline" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </nav>
+        </header>
+
+        <!-- Welcome Section -->
+        <section class="welcome-section" id="welcomeSection">
+            <div class="welcome-content">
+                <h2>Welcome to LifeGoals</h2>
+                <p>Your personal goal tracking application. Set, manage, and achieve your life goals with ease.</p>
+                <div class="auth-buttons">
+                    <button id="showLoginBtn" class="btn btn-primary">Login</button>
+                    <button id="showRegisterBtn" class="btn btn-secondary">Register</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Authentication Forms -->
+        <section class="auth-section" id="authSection" style="display: none;">
+            <!-- Login Form -->
+            <div class="auth-form" id="loginForm">
+                <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Login</button>
+                </form>
+                <p class="auth-switch">
+                    Don't have an account? 
+                    <a href="#" id="switchToRegister">Register here</a>
+                </p>
+            </div>
+
+            <!-- Register Form -->
+            <div class="auth-form" id="registerForm" style="display: none;">
+                <h2><i class="fas fa-user-plus"></i> Register</h2>
+                <form id="registerFormElement">
+                    <div class="form-group">
+                        <label for="registerName">Name</label>
+                        <input type="text" id="registerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Register</button>
+                </form>
+                <p class="auth-switch">
+                    Already have an account? 
+                    <a href="#" id="switchToLogin">Login here</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Dashboard -->
+        <section class="dashboard" id="dashboard" style="display: none;">
+            <div class="dashboard-header">
+                <h2>Welcome back, <span id="userName"></span>!</h2>
+                <p>Manage your life goals and track your progress</p>
+            </div>
+
+            <!-- Add Goal Form -->
+            <div class="add-goal-section">
+                <h3><i class="fas fa-plus-circle"></i> Add New Goal</h3>
+                <form id="addGoalForm">
+                    <div class="form-group">
+                        <input type="text" id="goalText" placeholder="Enter your goal..." required>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Goal
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Goals List -->
+            <div class="goals-section">
+                <h3><i class="fas fa-list"></i> Your Goals</h3>
+                <div id="goalsList" class="goals-list">
+                    <!-- Goals will be dynamically loaded here -->
+                </div>
+                <div id="noGoals" class="no-goals" style="display: none;">
+                    <i class="fas fa-target"></i>
+                    <p>No goals yet. Add your first goal above!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Profile Section -->
+        <section class="profile-section" id="profileSection" style="display: none;">
+            <div class="profile-header">
+                <h2><i class="fas fa-user-circle"></i> User Profile</h2>
+                <p>View and manage your account information</p>
+            </div>
+
+            <div class="profile-content">
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="profile-info">
+                        <div class="profile-field">
+                            <label>Name:</label>
+                            <span id="profileName">Loading...</span>
+                        </div>
+                        <div class="profile-field">
+                            <label>Email:</label>
+                            <span id="profileEmail">Loading...</span>
+                        </div>
+                        <div class="profile-field">
+                            <label>User ID:</label>
+                            <span id="profileId">Loading...</span>
+                        </div>
+                        <div class="profile-field">
+                            <label>Member Since:</label>
+                            <span id="profileJoined">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <button id="refreshProfileBtn" class="btn btn-secondary">
+                        <i class="fas fa-sync-alt"></i> Refresh Profile
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Documentation -->
+        <section class="api-docs" id="apiDocs" style="display: none;">
+            <div class="docs-header">
+                <h2><i class="fas fa-code"></i> API Documentation</h2>
+                <p>Complete guide to the LifeGoals API endpoints</p>
+            </div>
+
+            <div class="endpoint-group">
+                <h3>Authentication Endpoints</h3>
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="url">/api/users</span>
+                        <span class="description">Register a new user</span>
+                    </div>
+                    <div class="endpoint-body">
+                        <strong>Body:</strong>
+                        <pre>{ "name": "John Doe", "email": "john@example.com", "password": "password123" }</pre>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="url">/api/users/login</span>
+                        <span class="description">Login user</span>
+                    </div>
+                    <div class="endpoint-body">
+                        <strong>Body:</strong>
+                        <pre>{ "email": "john@example.com", "password": "password123" }</pre>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="url">/api/users/me</span>
+                        <span class="description">Get current user profile</span>
+                    </div>
+                    <div class="endpoint-body">
+                        <strong>Headers:</strong>
+                        <pre>Authorization: Bearer &lt;token&gt;</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="endpoint-group">
+                <h3>Goal Management Endpoints</h3>
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="url">/api/goals</span>
+                        <span class="description">Get all user goals</span>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="url">/api/goals</span>
+                        <span class="description">Create a new goal</span>
+                    </div>
+                    <div class="endpoint-body">
+                        <strong>Body:</strong>
+                        <pre>{ "text": "Learn a new programming language" }</pre>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method put">PUT</span>
+                        <span class="url">/api/goals/:id</span>
+                        <span class="description">Update a goal</span>
+                    </div>
+                    <div class="endpoint-body">
+                        <strong>Body:</strong>
+                        <pre>{ "text": "Updated goal text" }</pre>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method delete">DELETE</span>
+                        <span class="url">/api/goals/:id</span>
+                        <span class="description">Delete a goal</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2024 LifeGoals. Built with Node.js, Express, and MongoDB.</p>
+                <div class="footer-links">
+                    <button id="showApiDocs" class="btn btn-link">
+                        <i class="fas fa-book"></i> API Docs
+                    </button>
+                    <button id="backToApp" class="btn btn-link" style="display: none;">
+                        <i class="fas fa-arrow-left"></i> Back to App
+                    </button>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Loading Spinner -->
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toast" class="toast"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
